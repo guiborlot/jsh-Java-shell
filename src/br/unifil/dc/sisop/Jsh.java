@@ -1,6 +1,8 @@
 package br.unifil.dc.sisop;
+
 import java.io.*;
 import java.util.*;
+import java.io.IOException;
 
 /**
  * Write a description of class Jsh here.
@@ -93,48 +95,73 @@ public final class Jsh {
          * argumento secundário que será tratada dependendo do case, neste exemplo será usado para determinar o nome do
          * diretório que foi criado.
          */
-        switch(comando.getArgumentos().get(0)){
+        switch (comando.getArgumentos().get(0)) {
+
             /**
              * Retorna 0 fazendo com que o programa encerre.
              */
-            case("encerrar"):{
+            case ("encerrar"): {
                 System.exit(0);
                 break;
             }
+
             /**
              * retorna a data e hora local.
              */
-            case("relogio"):{
+            case ("relogio"): {
                 ComandosInternos.exibirRelogio();
                 break;
             }
+
             /**
              * Lista todos os arquivos e diretórios naquele path.
              */
-            case("la"):{
+            case ("la"): {
                 ComandosInternos.escreverListaArquivos(Optional.of(userDir));
                 break;
             }
+
             /**
              * cria um novo diretório com o nome digitado
              * Ex: "cd 'nome+do+diretório'".
              */
-            case("cd"):{
+            case ("cd"): {
                 ComandosInternos.criarNovoDiretorio(userDir, comando.getArgumentos().get(1));
                 break;
             }
+
             /**
              * Apaga o diretório especificado
              * Ex: "ad 'nome+do+diretório'".
              */
-            case("ad"):{
+            case ("ad"): {
                 ComandosInternos.apagarDiretorio(userDir, comando.getArgumentos().get(1));
+                break;
+            }
+
+            /**
+             * Muda o diretório atual.
+             * Ex: "mdt .."
+             */
+            case ("mdt"): {
+                ComandosInternos.mudarDiretorioTrabalho(userDir, comando.getArgumentos().get(1));
+                break;
+            }
+
+            /**
+             * Executa um programa no diretório atual de trabalho.
+             */
+            default: {
+                executarPrograma(comando);
+                break;
             }
         }
     }
-
+    /**
+     * Método ainda não implementado.
+     */
     public static int executarPrograma(ComandoPrompt comando) {
-        throw new RuntimeException("Método ainda não implementado.");
+        return (1);
     }
 
 
@@ -149,7 +176,7 @@ public final class Jsh {
     /**
      * Este metodo retorna o UID do usuário
      */
-    public static String getUID(){
+    public static String getUID() {
         Runtime r = Runtime.getRuntime();
         Process p;
         /**
@@ -158,7 +185,7 @@ public final class Jsh {
          */
         try {
             String userName = System.getProperty("user.name");
-            String command = "id -u "+userName;
+            String command = "id -u " + userName;
             p = r.exec(command);
 
             Scanner scanner = new Scanner(p.getInputStream());
@@ -169,7 +196,6 @@ public final class Jsh {
             throw new RuntimeException("UID not found");
         }
     }
-
 
 
     /**
