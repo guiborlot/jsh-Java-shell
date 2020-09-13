@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Write a description of class Jsh here.
  *
- * @author Ricardo Inacio Alvares e Silva
+ * @author Guilherme Borlot Oliveira
  * @version 180823
  */
 public final class Jsh {
@@ -32,14 +32,24 @@ public final class Jsh {
      * terminal está pronto para receber o próximo comando como entrada.
      */
     public static void exibirPrompt() {
-
+        /**
+         * Armazena na variável o nome do usuŕio da máquina.
+         */
         userName = System.getProperty("user.name");
 
+        /**
+         * Armazena na variável o path atual do usuário.
+         */
         userDir = System.getProperty("user.dir");
 
+        /**
+         * Armazena na variável o User ID atual.
+         */
         userID = getUID();
 
-
+        /**
+         * Printa todas as variáveis acima.
+         */
         System.out.print(userName + "#" + userID + ":" + userDir + "%");
 
 
@@ -76,23 +86,47 @@ public final class Jsh {
      */
     public static void executarComando(ComandoPrompt comando) {
         ProcessBuilder process = new ProcessBuilder();
+        /**
+         * Como na classe ComandosPrompt eu trato a variavel argumentos separando as palavras em um array, eu pego a
+         * primeira palavra que foi digitada para fazer o switch. por ex: "cd pasta" aonde "cd" é a primeira palavra
+         * ou seja, tem o indice 0 no array, é o "cd" que será usado para fazer o switch e a "pasta" será usada como
+         * argumento secundário que será tratada dependendo do case, neste exemplo será usado para determinar o nome do
+         * diretório que foi criado.
+         */
         switch(comando.getArgumentos().get(0)){
+            /**
+             * Retorna 0 fazendo com que o programa encerre.
+             */
             case("encerrar"):{
                 System.exit(0);
                 break;
             }
+            /**
+             * retorna a data e hora local.
+             */
             case("relogio"):{
                 ComandosInternos.exibirRelogio();
                 break;
             }
+            /**
+             * Lista todos os arquivos e diretórios naquele path.
+             */
             case("la"):{
                 ComandosInternos.escreverListaArquivos(Optional.of(userDir));
                 break;
             }
+            /**
+             * cria um novo diretório com o nome digitado
+             * Ex: "cd 'nome+do+diretório'".
+             */
             case("cd"):{
                 ComandosInternos.criarNovoDiretorio(userDir, comando.getArgumentos().get(1));
                 break;
             }
+            /**
+             * Apaga o diretório especificado
+             * Ex: "ad 'nome+do+diretório'".
+             */
             case("ad"):{
                 ComandosInternos.apagarDiretorio(userDir, comando.getArgumentos().get(1));
             }
@@ -112,9 +146,16 @@ public final class Jsh {
         promptTerminal();
     }
 
+    /**
+     * Este metodo retorna o UID do usuário
+     */
     public static String getUID(){
         Runtime r = Runtime.getRuntime();
         Process p;
+        /**
+         * Concatena a string id -u com o user.name e uso a função exec para executá-la,
+         * depois armazeno o resultado da função numa string e faço o retorno.
+         */
         try {
             String userName = System.getProperty("user.name");
             String command = "id -u "+userName;

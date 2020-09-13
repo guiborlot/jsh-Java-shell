@@ -6,15 +6,18 @@ import java.util.Collections;
 /**
  * Write a description of class ComandoPrompt here.
  *
- * @author Ricardo Inacio Alvares e Silva
+ * @author Guilherme Borlot Oliveira
  * @version 180823
  */
 public class ComandoPrompt {
     
     public ComandoPrompt(String comando) {
-        // ESCREVA AQUI SEU CODIGO PARA ESTRUTURAR O COMANDO RECEBIDO DO PROMPT.
+        //ESCREVA AQUI SEU CODIGO PARA ESTRUTURAR O COMANDO RECEBIDO DO PROMPT.
         nome = comando;
 
+        /**
+         * Separa as palavras do comando em várias palavras aonde o espaço determina o fim da palavra.
+         */
         argumentos = (comando.split(" "));
     }
     
