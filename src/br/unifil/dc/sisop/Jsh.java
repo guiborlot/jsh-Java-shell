@@ -87,7 +87,6 @@ public final class Jsh {
      * programa desconhecido.
      */
     public static void executarComando(ComandoPrompt comando) {
-        ProcessBuilder process = new ProcessBuilder();
         /**
          * Como na classe ComandosPrompt eu trato a variavel argumentos separando as palavras em um array, eu pego a
          * primeira palavra que foi digitada para fazer o switch. por ex: "cd pasta" aonde "cd" é a primeira palavra
@@ -161,7 +160,48 @@ public final class Jsh {
      * Método ainda não implementado.
      */
     public static int executarPrograma(ComandoPrompt comando) {
+        File arquivo = new File(userDir);
+        File[] file = arquivo.listFiles();
+
+        if(file != null){
+            for(int i=0; i<file.length; i++){
+                File f = file[i];
+                //System.out.println(f.getName());
+                //System.out.println(comando.getNome());
+
+                /* Como no linux para executar é inserido o './' no começo do comando
+                * eu estou cortando as duas primeiras letras do comando para comparar,
+                * no windows isso não seria necessário*/
+                if(comando.getNome().substring(2).equals(f.getName())){
+                    executarProcesso(comando.getNome());
+                }
+            }
+        }
+
         return (1);
+    }
+
+    public static void executarProcesso(String comando){
+        //System.out.println("Chamei");
+        try {
+            ProcessBuilder p = new ProcessBuilder();
+            p.command(comando);
+            Process process = p.start();
+
+            int exitCode = process.waitFor();
+
+            Scanner scanner = new Scanner(process.getInputStream());
+            String result = scanner.useDelimiter("$$").next();
+            System.out.println(result);
+
+            if(exitCode != 0){
+                System.out.println("Erro na execução do processo filho");
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
 
