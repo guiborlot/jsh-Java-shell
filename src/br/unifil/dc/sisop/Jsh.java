@@ -174,6 +174,8 @@ public final class Jsh {
                 * no windows isso não seria necessário*/
                 if(comando.getNome().substring(2).equals(f.getName())){
                     executarProcesso(comando.getNome());
+                } else{
+                    System.out.println("Este comando não existe");
                 }
             }
         }
